@@ -657,7 +657,7 @@ header {
 }
 
 /* ✅ 420px screens */
-@media (max-width: 420px) {
+@media (max-width: 426px) {
   .section h2 {
     font-size: 18px;
     margin-left: 8px;
@@ -736,26 +736,37 @@ header {
 
 
 
-@media (max-width:461px){
-  .banners {
-    display: grid;
-
-    grid-template-rows: auto auto; /* automatic height for rows */
-    gap: 20px 30px; /* smaller gap between banners */
+@media (max-width:426px){
+   .banners {
+    grid-template-columns: 1fr 1fr;  /* single column */
+    gap: 15px;
+    margin-left: 0;
     width: 100%;
-    height: auto; /* removed full viewport height */
-    margin-left: 0; /* center aligned */
-    row-gap: 50px;
-    column-gap : 130px;
+    row-gap: 30px;
+    column-gap: 60px;
+  }
+
+  .combo{
+ font-size: 24px;
+    color: #090909;
+    margin-bottom: 40px;
+    margin-left: 40px;       /* no left margin */
+    text-align: left;
+    margin-top: 40px;
+    width: 50%;
+    font-weight: 300;
 }
+
 }
 /* For all mobiles ≤769px (base rule) */
 @media (max-width: 769px) {
   .banners {
-    grid-template-columns: 1fr;  /* single column */
+    grid-template-columns: 1fr 1fr;  /* single column */
     gap: 15px;
     margin-left: 0;
     width: 100%;
+    row-gap: 30px;
+    column-gap: 60px;
   }
 }
 
@@ -775,6 +786,11 @@ header {
     margin-left: 0;
     width: 100%;
     max-height: 100px;
+  }
+}
+@media (max-width: 476px){
+  {
+
   }
 }
 
