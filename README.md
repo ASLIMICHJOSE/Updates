@@ -1,40 +1,40 @@
-# Acorn-JSX
+# @jridgewell/resolve-uri
 
-[![Build Status](https://travis-ci.org/acornjs/acorn-jsx.svg?branch=master)](https://travis-ci.org/acornjs/acorn-jsx)
-[![NPM version](https://img.shields.io/npm/v/acorn-jsx.svg)](https://www.npmjs.org/package/acorn-jsx)
+> Resolve a URI relative to an optional base URI
 
-This is plugin for [Acorn](http://marijnhaverbeke.nl/acorn/) - a tiny, fast JavaScript parser, written completely in JavaScript.
+Resolve any combination of absolute URIs, protocol-realtive URIs, absolute paths, or relative paths.
 
-It was created as an experimental alternative, faster [React.js JSX](http://facebook.github.io/react/docs/jsx-in-depth.html) parser. Later, it replaced the [official parser](https://github.com/facebookarchive/esprima) and these days is used by many prominent development tools.
+## Installation
 
-## Transpiler
-
-Please note that this tool only parses source code to JSX AST, which is useful for various language tools and services. If you want to transpile your code to regular ES5-compliant JavaScript with source map, check out [Babel](https://babeljs.io/) and [Buble](https://buble.surge.sh/) transpilers which use `acorn-jsx` under the hood.
+```sh
+npm install @jridgewell/resolve-uri
+```
 
 ## Usage
 
-Requiring this module provides you with an Acorn plugin that you can use like this:
-
-```javascript
-var acorn = require("acorn");
-var jsx = require("acorn-jsx");
-acorn.Parser.extend(jsx()).parse("my(<jsx/>, 'code');");
+```typescript
+function resolve(input: string, base?: string): string;
 ```
 
-Note that official spec doesn't support mix of XML namespaces and object-style access in tag names (#27) like in `<namespace:Object.Property />`, so it was deprecated in `acorn-jsx@3.0`. If you still want to opt-in to support of such constructions, you can pass the following option:
+```js
+import resolve from '@jridgewell/resolve-uri';
 
-```javascript
-acorn.Parser.extend(jsx({ allowNamespacedObjects: true }))
+resolve('foo', 'https://example.com'); // => 'https://example.com/foo'
 ```
 
-Also, since most apps use pure React transformer, a new option was introduced that allows to prohibit namespaces completely:
-
-```javascript
-acorn.Parser.extend(jsx({ allowNamespaces: false }))
-```
-
-Note that by default `allowNamespaces` is enabled for spec compliancy.
-
-## License
-
-This plugin is issued under the [MIT license](./LICENSE).
+| Input                 | Base                    | Resolution                     | Explanation                                                  |
+|-----------------------|-------------------------|--------------------------------|--------------------------------------------------------------|
+| `https://example.com` | _any_                   | `https://example.com/`         | Input is normalized only                                     |
+| `//example.com`       | `https://base.com/`     | `https://example.com/`         | Input inherits the base's protocol                           |
+| `//example.com`       | _rest_                  | `//example.com/`               | Input is normalized only                                     |
+| `/example`            | `https://base.com/`     | `https://base.com/example`     | Input inherits the base's origin                             |
+| `/example`            | `//base.com/`           | `//base.com/example`           | Input inherits the base's host and remains protocol relative |
+| `/example`            | _rest_                  | `/example`                     | Input is normalized only                                     |
+| `example`             | `https://base.com/dir/` | `https://base.com/dir/example` | Input is joined with the base                                |
+| `example`             | `https://base.com/file` | `https://base.com/example`     | Input is joined with the base without its file               |
+| `example`             | `//base.com/dir/`       | `//base.com/dir/example`       | Input is joined with the base's last directory               |
+| `example`             | `//base.com/file`       | `//base.com/example`           | Input is joined with the base without its file               |
+| `example`             | `/base/dir/`            | `/base/dir/example`            | Input is joined with the base's last directory               |
+| `example`             | `/base/file`            | `/base/example`                | Input is joined with the base without its file               |
+| `example`             | `base/dir/`             | `base/dir/example`             | Input is joined with the base's last directory               |
+| `example`             | `base/file`             | `base/example`                 | Input is joined with the base without its file               |
