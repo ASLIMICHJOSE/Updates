@@ -1,0 +1,705 @@
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}html { scroll-behavior: smooth; }</style><script src="https://cdn.tailwindcss.com"></script><script>tailwind.config={darkMode:"class",theme:{extend:{"colors":{"on-primary-container":"#78566b","surface-container-high":"#eae8e4","surface-variant":"#e4e2de","surface-container-low":"#f5f3ef","secondary-container":"#bae6fd","background":"#fbf9f5","outline":"#807479","on-tertiary-container":"#3c6860","surface":"#fbf9f5","on-background":"#1b1c1a","on-primary":"#ffffff","surface-container-lowest":"#ffffff","inverse-surface":"#30312e","primary-fixed":"#ffd8ed","surface-tint":"#765469","inverse-primary":"#e5bad3","secondary":"#396477","tertiary-container":"#b6e5db","surface-container":"#efeeea","on-secondary-container":"#3d687c","primary-fixed-dim":"#e5bad3","on-error-container":"#93000a","primary-container":"#fbcfe8","on-secondary":"#ffffff","surface-bright":"#fbf9f5","tertiary":"#3b665f","on-tertiary-fixed":"#00201c","on-error":"#ffffff","secondary-fixed-dim":"#a1cde3","tertiary-fixed-dim":"#a2d0c6","outline-variant":"#d1c3c9","error":"#ba1a1a","on-surface-variant":"#4e4449","inverse-on-surface":"#f2f0ed","on-secondary-fixed":"#001f2a","on-primary-fixed":"#2c1325","on-tertiary-fixed-variant":"#224e47","surface-container-highest":"#e4e2de","on-surface":"#1b1c1a","on-tertiary":"#ffffff","surface-dim":"#dbdad6","error-container":"#ffdad6","on-primary-fixed-variant":"#5c3d51","secondary-fixed":"#bee9ff","on-secondary-fixed-variant":"#1e4c5f","primary":"#765469","tertiary-fixed":"#bdece2"},"borderRadius":{"DEFAULT":"1rem","lg":"2rem","xl":"3rem","full":"9999px"},"spacing":{"margin-mobile":"20px","unit":"8px","gutter":"24px","margin-desktop":"64px","container-max":"1200px"},"fontFamily":{"headline-md":["Plus Jakarta Sans"],"label-caps":["Quicksand"],"body-md":["Be Vietnam Pro"],"display-lg":["Plus Jakarta Sans"],"body-lg":["Be Vietnam Pro"],"display-lg-mobile":["Plus Jakarta Sans"]},"fontSize":{"headline-md":["32px",{"lineHeight":"40px","fontWeight":"600"}],"label-caps":["14px",{"lineHeight":"20px","letterSpacing":"0.05em","fontWeight":"700"}],"body-md":["16px",{"lineHeight":"24px","fontWeight":"400"}],"display-lg":["48px",{"lineHeight":"56px","letterSpacing":"-0.02em","fontWeight":"700"}],"body-lg":["18px",{"lineHeight":"28px","fontWeight":"400"}],"display-lg-mobile":["36px",{"lineHeight":"42px","fontWeight":"700"}]}}}}</script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@100..900&amp;family=Plus+Jakarta+Sans:wght@100..900&amp;family=Quicksand:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<!-- Leaflet Map CSS and JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</head><body class="bg-background font-body-md text-on-background"><header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl shadow-[0_4px_24px_rgba(118,84,105,0.08)]"><div class="h-20 w-full px-margin-mobile lg:px-margin-desktop max-w-container-max mx-auto flex items-center justify-between"><div class="flex items-center gap-unit cursor-pointer select-none active:scale-95 transition-transform" id="logoContainer"><span class="material-symbols-outlined text-primary text-[32px]">celebration</span><span class="font-headline-md text-headline-md text-primary tracking-tight">One!</span></div><nav class="hidden md:flex items-center gap-gutter" id="desktopNav" data-active-classes="bg-primary-container text-on-primary-container font-bold rounded-full"><a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-all px-4 py-2 rounded-full" data-path="home" href="#home">HOME</a><a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-all px-4 py-2 rounded-full" data-path="about" href="#about">ABOUT</a><a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-all px-4 py-2 rounded-full" data-path="details" href="#details">DETAILS</a><a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-all px-4 py-2 rounded-full" data-path="gallery" href="#gallery">GALLERY</a></nav><div class="flex md:hidden cursor-pointer" id="mobileMenuBtn"><span class="material-symbols-outlined text-primary text-[28px]" id="mobileMenuIcon">menu</span></div></div>
+  <!-- Mobile Navigation Dropdown -->
+  <div class="hidden md:hidden bg-surface/95 border-t border-surface-variant/50 backdrop-blur-xl px-margin-mobile py-6 flex flex-col gap-4 shadow-lg transition-all duration-300" id="mobileMenu">
+    <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors py-2 mobile-nav-link border-b border-surface-variant/30" data-path="home" href="#home">HOME</a>
+    <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors py-2 mobile-nav-link border-b border-surface-variant/30" data-path="about" href="#about">ABOUT</a>
+    <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors py-2 mobile-nav-link border-b border-surface-variant/30" data-path="details" href="#details">DETAILS</a>
+    <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors py-2 mobile-nav-link" data-path="gallery" href="#gallery">GALLERY</a>
+  </div>
+</header><main class="w-full pt-20"><div class="flex flex-col w-full overflow-hidden relative">
+<div class="fixed top-24 right-4 z-50">
+<button class="w-12 h-12 rounded-full bg-primary text-on-primary shadow-xl flex items-center justify-center hover:scale-110 transition-transform focus:outline-none pulse-on-play" id="musicToggle">
+<span class="material-symbols-outlined" id="musicIcon">volume_up</span>
+</button>
+</div>
+<div class="fixed inset-0 pointer-events-none overflow-hidden z-0" id="confetti-container"></div>
+<div class="fixed inset-0 pointer-events-none overflow-hidden z-0 hidden" id="balloon-container"></div>
+<section class="relative min-h-[90vh] flex flex-col items-center justify-center pt-16 px-margin-mobile lg:px-margin-desktop fade-up" id="home">
+<div class="absolute inset-0 bg-gradient-to-b from-primary-container/30 to-background -z-10"></div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center max-w-container-max mx-auto w-full">
+<div class="flex flex-col items-center md:items-start text-center md:text-left space-y-6 z-10">
+<span class="font-label-caps text-primary tracking-widest uppercase">You're Invited!</span>
+<h1 class="font-display-lg-mobile md:font-display-lg text-primary text-5xl md:text-7xl leading-tight">Join us for a magical first birthday celebration.</h1>
+<p class="font-body-lg text-on-surface-variant max-w-md">Our little star is turning one, and we can't wait to share this joyous milestone with our favorite people.</p>
+<a class="bg-primary text-on-primary font-label-caps px-8 py-4 rounded-full shadow-[0_8px_24px_rgba(118,84,105,0.25)] hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(118,84,105,0.35)] transition-all duration-300 btn-pulse" href="#details">VIEW DETAILS</a>
+</div>
+<div class="relative w-full aspect-square max-w-md mx-auto z-10">
+<div class="absolute inset-0 bg-secondary-container rounded-full blur-3xl opacity-50 animate-pulse"></div>
+<img alt="Whimsical 1st birthday illustration" class="relative w-full h-full object-contain drop-shadow-2xl animate-[float_6s_ease-in-out_infinite]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCo3b8Z5UfbYkU9EnB5Ckw9MfFsCyksO_UOPGBFxvNH-O8CuOmD553d-0S6XAcpZ0m6i_W4GT54YbcAj-cnok_s-rfqjhaAnBdKXcbWooglweKdbxDl250MS1AHFZI4U-3vxHnEVkJzwhSLHj-siWEt-BsSEqEK6NjGbqthWPDZO6HI9AdHLrbEGoFj6yprzSrnIluQXlI8Q9sTWCo19ytacqfDfDG_a1N6ByMAJy4Eg5-vA6V1dl4f"/>
+</div>
+</div>
+</section>
+<section class="py-16 px-margin-mobile lg:px-margin-desktop fade-up" id="countdown">
+<div class="max-w-3xl mx-auto bg-surface-container-low rounded-[3rem] p-8 md:p-12 shadow-[0_20px_40px_rgba(118,84,105,0.05)] relative overflow-hidden text-center">
+<div class="absolute -top-12 -right-12 text-tertiary-container/30 opacity-20">
+<span class="material-symbols-outlined text-[120px]" style="font-variation-settings: 'FILL' 1;">stars</span>
+</div>
+<h2 class="font-headline-md text-primary mb-8 relative z-10">The Celebration Begins In...</h2>
+<div class="flex justify-center gap-4 md:gap-8 relative z-10" id="timer">
+<div class="flex flex-col items-center">
+<div class="bg-surface w-16 h-16 md:w-24 md:h-24 rounded-2xl shadow-inner flex items-center justify-center mb-2">
+<span class="font-display-lg text-primary text-3xl md:text-5xl animate-[pulse_2s_ease-in-out_infinite]" id="days">14</span>
+</div>
+<span class="font-label-caps text-on-surface-variant text-xs md:text-sm">DAYS</span>
+</div>
+<div class="font-display-lg text-primary opacity-50 pt-2 md:pt-4 animate-[pulse_2s_ease-in-out_infinite]">:</div>
+<div class="flex flex-col items-center">
+<div class="bg-surface w-16 h-16 md:w-24 md:h-24 rounded-2xl shadow-inner flex items-center justify-center mb-2">
+<span class="font-display-lg text-primary text-3xl md:text-5xl animate-[pulse_2s_ease-in-out_infinite]" id="hours">08</span>
+</div>
+<span class="font-label-caps text-on-surface-variant text-xs md:text-sm">HOURS</span>
+</div>
+<div class="font-display-lg text-primary opacity-50 pt-2 md:pt-4 animate-[pulse_2s_ease-in-out_infinite]">:</div>
+<div class="flex flex-col items-center">
+<div class="bg-surface w-16 h-16 md:w-24 md:h-24 rounded-2xl shadow-inner flex items-center justify-center mb-2">
+<span class="font-display-lg text-primary text-3xl md:text-5xl animate-[pulse_2s_ease-in-out_infinite]" id="minutes">45</span>
+</div>
+<span class="font-label-caps text-on-surface-variant text-xs md:text-sm">MINUTES</span>
+</div>
+</div>
+</div>
+</section>
+<section class="py-24 px-margin-mobile lg:px-margin-desktop relative fade-up" id="about">
+<div class="absolute left-0 top-1/2 -translate-y-1/2 w-64 h-64 bg-primary-container rounded-full blur-[100px] -z-10 opacity-60"></div>
+<div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+<div class="relative">
+<div class="absolute inset-0 bg-primary translate-x-4 translate-y-4 rounded-[2rem] -z-10 opacity-20"></div>
+<img alt="Smiling 1-year-old baby" class="w-full h-auto rounded-[2rem] object-cover shadow-2xl" src="assets/hero_section.png"/>
+<div class="absolute -bottom-6 -right-6 bg-surface px-6 py-4 rounded-full shadow-lg flex items-center gap-2 hover:scale-105 transition-transform cursor-default">
+<span class="material-symbols-outlined text-tertiary animate-[pulse_2s_ease-in-out_infinite]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="font-label-caps text-on-surface">One whole year of joy!</span>
+</div>
+</div>
+<div class="space-y-6">
+<div class="inline-flex items-center gap-2 bg-secondary-container/50 px-4 py-2 rounded-full mb-2">
+<span class="material-symbols-outlined text-secondary text-sm">auto_awesome</span>
+<span class="font-label-caps text-on-secondary-container">ABOUT THE BIRTHDAY</span>
+</div>
+<h2 class="font-display-lg-mobile md:font-display-lg text-on-background">A Year of Firsts, A Lifetime of Love.</h2>
+<p class="font-body-lg text-on-surface-variant leading-relaxed">It feels like just yesterday we welcomed our little bundle of joy. From first smiles to first steps, this year has been an incredible journey. We want to celebrate all the love, laughter, and messy milestones with the people who mean the most to us.</p>
+<p class="font-body-md text-on-surface-variant">Expect lots of cake, giggles, and perhaps a tiny bit of chaos in the best way possible.</p>
+</div>
+</div>
+</section>
+<section class="py-24 px-margin-mobile lg:px-margin-desktop bg-surface-container fade-up" id="details">
+<div class="max-w-container-max mx-auto text-center mb-16">
+<h2 class="font-headline-md text-on-background mb-4">When &amp; Where</h2>
+<p class="font-body-md text-on-surface-variant max-w-xl mx-auto">All the details you need to join the fun.</p>
+</div>
+<div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="bg-surface rounded-3xl p-8 flex flex-col items-center text-center shadow-lg hover:-translate-y-4 hover:shadow-2xl transition-all duration-300 card-hover">
+<div class="w-16 h-16 rounded-full bg-primary-container flex items-center justify-center mb-6 text-primary">
+<span class="material-symbols-outlined text-3xl">calendar_today</span>
+</div>
+<h3 class="font-headline-md text-lg mb-2 text-on-surface">Date</h3>
+<p class="font-body-md text-on-surface-variant font-bold">Friday, July 31st</p>
+<p class="font-body-md text-on-surface-variant">2026</p>
+</div>
+<div class="bg-surface rounded-3xl p-8 flex flex-col items-center text-center shadow-lg hover:-translate-y-6 hover:shadow-2xl transition-all duration-300 transform md:-translate-y-4 card-hover">
+<div class="w-16 h-16 rounded-full bg-secondary-container flex items-center justify-center mb-6 text-secondary">
+<span class="material-symbols-outlined text-3xl">schedule</span>
+</div>
+<h3 class="font-headline-md text-lg mb-2 text-on-surface">Time</h3>
+<p class="font-body-md text-on-surface-variant font-bold">6:00 PM onwards</p>
+<p class="font-body-md text-on-surface-variant">Cake cutting at 7:30 PM</p>
+</div>
+<div class="bg-surface rounded-3xl p-8 flex flex-col items-center text-center shadow-lg hover:-translate-y-4 hover:shadow-2xl transition-all duration-300 card-hover">
+<div class="w-16 h-16 rounded-full bg-tertiary-container flex items-center justify-center mb-6 text-tertiary">
+<span class="material-symbols-outlined text-3xl">location_on</span>
+</div>
+<h3 class="font-headline-md text-lg mb-2 text-on-surface">Location</h3>
+<p class="font-body-md text-on-surface-variant font-bold">Vethanager Community Hall</p>
+<p class="font-body-md text-on-surface-variant mb-4">Vethanager, Nagercoil</p>
+<button id="viewMapBtn" class="text-primary font-label-caps border-2 border-primary rounded-full px-6 py-2 hover:bg-primary hover:text-on-primary transition-colors mt-auto active:scale-95">VIEW MAP</button>
+</div>
+</div>
+</section>
+
+
+<!-- Gallery Section -->
+<section class="py-24 px-margin-mobile lg:px-margin-desktop fade-up" id="gallery">
+  <div class="max-w-container-max mx-auto">
+    <div class="text-center mb-16">
+      <div class="inline-flex items-center gap-2 bg-tertiary-container/50 px-4 py-2 rounded-full mb-2">
+        <span class="material-symbols-outlined text-tertiary text-sm">photo_library</span>
+        <span class="font-label-caps text-on-tertiary-container">OUR GALLERY</span>
+      </div>
+      <h2 class="font-display-lg-mobile md:font-display-lg text-on-background">Moments of Pure Happiness</h2>
+      <p class="font-body-md text-on-surface-variant max-w-xl mx-auto mt-2">A tiny peak into a year filled with smiles, laughter, and special milestone achievements.</p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="group relative overflow-hidden rounded-[2rem] bg-surface-container shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer aspect-[4/5] gallery-card" data-img="./assets/image1.png" data-title="The Smash Cake" data-desc="First taste of sweetness and messy fun.">
+        <img src="./assets/image1.png" alt="Smash Cake Milestone" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-8">
+          <span class="font-label-caps text-white tracking-widest text-xs uppercase mb-1">Milestone 1</span>
+          <h3 class="font-headline-md text-lg text-white">The Smash Cake</h3>
+          <p class="font-body-md text-white/80 text-sm mt-1">First taste of sweetness and messy fun.</p>
+        </div>
+      </div>
+      
+      <div class="group relative overflow-hidden rounded-[2rem] bg-surface-container shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer aspect-[4/5] gallery-card" data-img="./assets/image2.png" data-title="Dreaming Big" data-desc="Reaching for the stars, one smile at a time.">
+        <img src="./assets/image2.png" alt="Floating Dreamer" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-8">
+          <span class="font-label-caps text-white tracking-widest text-xs uppercase mb-1">Milestone 2</span>
+          <h3 class="font-headline-md text-lg text-white">Dreaming Big</h3>
+          <p class="font-body-md text-white/80 text-sm mt-1">Reaching for the stars, one smile at a time.</p>
+        </div>
+      </div>
+
+      <div class="group relative overflow-hidden rounded-[2rem] bg-surface-container shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer aspect-[4/5] gallery-card" data-img="./assets/image3.png" data-title="Wild One Celebration" data-desc="Celebrating with all of our favorite friends.">
+        <img src="./assets/image3.png" alt="Safari Celebration" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-8">
+          <span class="font-label-caps text-white tracking-widest text-xs uppercase mb-1">Milestone 3</span>
+          <h3 class="font-headline-md text-lg text-white">Wild One Celebration</h3>
+          <p class="font-body-md text-white/80 text-sm mt-1">Celebrating with all of our favorite friends.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Lightbox Modal -->
+<div class="fixed inset-0 z-[100] hidden bg-inverse-surface/90 backdrop-blur-md items-center justify-center p-4 cursor-zoom-out select-none animate-fade-in" id="lightboxModal">
+  <div class="absolute top-6 right-6 text-white cursor-pointer bg-white/10 hover:bg-white/20 p-2 rounded-full transition-all active:scale-95" id="lightboxClose">
+    <span class="material-symbols-outlined text-2xl">close</span>
+  </div>
+  <div class="max-w-4xl max-h-[85vh] w-full flex flex-col items-center">
+    <img src="" id="lightboxImg" alt="Lightbox Image" class="max-h-[80vh] w-auto max-w-full object-contain rounded-2xl shadow-2xl animate-scale-up"/>
+    <h3 class="font-headline-md text-xl text-white mt-4 text-center" id="lightboxTitle"></h3>
+  </div>
+</div>
+
+<!-- Map Modal -->
+<div class="fixed inset-0 z-[100] hidden bg-inverse-surface/60 backdrop-blur-sm items-center justify-center p-4 animate-fade-in" id="mapModal">
+  <div class="bg-surface max-w-2xl w-full rounded-[2rem] overflow-hidden shadow-2xl border border-surface-variant flex flex-col max-h-[90vh] animate-scale-up">
+    <div class="p-6 border-b border-surface-variant flex items-center justify-between bg-surface-container-low">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-primary">location_on</span>
+        <h3 class="font-headline-md text-xl text-primary">Vethanager Community Hall</h3>
+      </div>
+      <button class="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container hover:bg-surface-variant text-on-surface-variant hover:text-primary transition-all" id="mapClose">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <div class="w-full h-[350px]" id="mapContainer"></div>
+    <div class="p-6 bg-surface-container-low border-t border-surface-variant flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div>
+        <p class="font-body-md text-on-surface font-bold text-sm sm:text-base">Vethanager, Nagercoil</p>
+        <p class="font-body-md text-on-surface-variant text-xs sm:text-sm">Friday, July 31st, 6:00 PM</p>
+      </div>
+      <a href="https://maps.google.com/?q=Vethanager+Community+Hall+Nagercoil" target="_blank" rel="noopener noreferrer" class="bg-primary text-on-primary font-label-caps text-center px-6 py-3 rounded-full hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 text-sm">
+        OPEN IN GOOGLE MAPS
+        <span class="material-symbols-outlined text-sm">open_in_new</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+<style>
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+  
+  .balloon {
+    position: absolute;
+    bottom: -100px;
+    width: 40px;
+    height: 50px;
+    background-color: var(--color, #ffd8ed);
+    border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+    animation: floatUp var(--duration, 10s) linear infinite;
+    animation-delay: var(--delay, 0s);
+    opacity: 0.6;
+    z-index: 1;
+  }
+  
+  .balloon::before {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 8px 4px 0 4px;
+    border-color: var(--color, #ffd8ed) transparent transparent transparent;
+  }
+
+  .balloon::after {
+    content: '';
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    width: 1px;
+    height: 30px;
+    background-color: rgba(0,0,0,0.1);
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(-110vh) rotate(20deg); }
+  }
+
+  .confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: var(--color, #bae6fd);
+    top: -10px;
+    animation: fall var(--duration, 5s) linear infinite;
+    animation-delay: var(--delay, 0s);
+    z-index: 2;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* New Animations */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+  
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .btn-pulse:hover {
+    animation: magneticPulse 1.5s infinite;
+  }
+
+  @keyframes magneticPulse {
+    0% { box-shadow: 0 0 0 0 rgba(118,84,105, 0.4); }
+    70% { box-shadow: 0 0 0 15px rgba(118,84,105, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(118,84,105, 0); }
+  }
+
+  .pulse-on-play.playing {
+    animation: softPulse 2s infinite;
+  }
+
+  @keyframes softPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .balloon, .confetti, .fade-up, .btn-pulse, .animate-\[float_6s_ease-in-out_infinite\], .animate-\[pulse_2s_ease-in-out_infinite\], .pulse-on-play.playing, .animate-fade-in, .animate-scale-up {
+      animation: none !important;
+      transition: none !important;
+      transform: none !important;
+      opacity: 1 !important;
+    }
+  }
+
+  /* Modal and custom interactive animations */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes scaleUp {
+    from { transform: scale(0.95) translateY(15px); opacity: 0; }
+    to { transform: scale(1) translateY(0); opacity: 1; }
+  }
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out forwards;
+  }
+  .animate-scale-up {
+    animation: scaleUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+  
+  /* Active states for scroll spy navigation */
+  .nav-active {
+    background-color: #fbcfe8 !important;
+    color: #78566b !important;
+    font-weight: 700 !important;
+    box-shadow: 0 4px 12px rgba(118, 84, 105, 0.1);
+  }
+  
+  /* Leaflet Map Custom styling to match theme */
+  .leaflet-popup-content-wrapper {
+    background: #fbf9f5 !important;
+    color: #1b1c1a !important;
+    border-radius: 1rem !important;
+    font-family: 'Be Vietnam Pro', sans-serif !important;
+    border: 1px solid #e4e2de !important;
+    box-shadow: 0 10px 25px rgba(118, 84, 105, 0.1) !important;
+  }
+  .leaflet-popup-tip {
+    background: #fbf9f5 !important;
+  }
+</style>
+<script>
+  // Web Audio API Synthesizer playing a cute lullaby Happy Birthday melody
+  class BirthdaySynth {
+    constructor() {
+      this.audioCtx = null;
+      this.isPlaying = false;
+      this.notes = [
+        // Happy Birthday in F major
+        [349.23, 0.4], [349.23, 0.4], [392.00, 0.8], [349.23, 0.8], [440.00, 0.8], [392.00, 1.2],
+        [349.23, 0.4], [349.23, 0.4], [392.00, 0.8], [349.23, 0.8], [523.25, 0.8], [440.00, 1.2],
+        [349.23, 0.4], [349.23, 0.4], [698.46, 0.8], [587.33, 0.8], [440.00, 0.8], [392.00, 0.8], [349.23, 1.2],
+        [587.33, 0.4], [587.33, 0.4], [523.25, 0.8], [440.00, 0.8], [466.16, 0.8], [440.00, 1.6]
+      ];
+      this.currentIndex = 0;
+      this.timeoutId = null;
+    }
+
+    start() {
+      if (this.isPlaying) return;
+      this.isPlaying = true;
+      if (!this.audioCtx) {
+        this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (this.audioCtx.state === 'suspended') {
+        this.audioCtx.resume();
+      }
+      this.currentIndex = 0;
+      this.playNext();
+    }
+
+    stop() {
+      this.isPlaying = false;
+      if (this.timeoutId) {
+        clearTimeout(this.timeoutId);
+        this.timeoutId = null;
+      }
+    }
+
+    playNext() {
+      if (!this.isPlaying) return;
+      const note = this.notes[this.currentIndex];
+      this.playTone(note[0], note[1]);
+      
+      this.currentIndex = (this.currentIndex + 1) % this.notes.length;
+      const delay = note[1] * 1000 + 100;
+      this.timeoutId = setTimeout(() => this.playNext(), delay);
+    }
+
+    playTone(freq, duration) {
+      if (!this.audioCtx) return;
+      
+      const osc = this.audioCtx.createOscillator();
+      const gainNode = this.audioCtx.createGain();
+      
+      // Soft chiptune triangle sound
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, this.audioCtx.currentTime);
+      
+      gainNode.gain.setValueAtTime(0, this.audioCtx.currentTime);
+      gainNode.gain.linearRampToValueAtTime(0.15, this.audioCtx.currentTime + 0.05); // low volume
+      gainNode.gain.setValueAtTime(0.15, this.audioCtx.currentTime + duration - 0.1);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioCtx.currentTime + duration);
+      
+      osc.connect(gainNode);
+      gainNode.connect(this.audioCtx.destination);
+      
+      osc.start();
+      osc.stop(this.audioCtx.currentTime + duration);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. Music Toggle
+    const musicBtn = document.getElementById('musicToggle');
+    const musicIcon = document.getElementById('musicIcon');
+    const synth = new BirthdaySynth();
+    let isPlaying = false;
+    
+    musicBtn.addEventListener('click', () => {
+      isPlaying = !isPlaying;
+      musicIcon.textContent = isPlaying ? 'volume_off' : 'volume_up';
+      musicBtn.classList.toggle('bg-surface-variant');
+      musicBtn.classList.toggle('text-on-surface-variant');
+      musicBtn.classList.toggle('bg-primary');
+      musicBtn.classList.toggle('text-on-primary');
+      musicBtn.classList.toggle('playing');
+      
+      if (isPlaying) {
+        synth.start();
+      } else {
+        synth.stop();
+      }
+    });
+
+    // 2. Animations Setup
+    const balloonContainer = document.getElementById('balloon-container');
+    const confettiContainer = document.getElementById('confetti-container');
+    const colors = ['#ffd8ed', '#bae6fd', '#b6e5db', '#fbcfe8', '#396477', '#3b665f'];
+
+    // Initial ambient animations
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      for(let i=0; i<12; i++) {
+        const balloon = document.createElement('div');
+        balloon.className = 'balloon';
+        balloon.style.left = `${Math.random() * 100}%`;
+        balloon.style.setProperty('--color', colors[Math.floor(Math.random() * colors.length)]);
+        balloon.style.setProperty('--duration', `${15 + Math.random() * 15}s`);
+        balloon.style.setProperty('--delay', `${Math.random() * 10}s`);
+        balloonContainer.appendChild(balloon);
+      }
+
+      for(let i=0; i<50; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = `${Math.random() * 100}%`;
+        confetti.style.setProperty('--color', colors[Math.floor(Math.random() * colors.length)]);
+        confetti.style.setProperty('--duration', `${4 + Math.random() * 8}s`);
+        confetti.style.setProperty('--delay', `${Math.random() * 10}s`);
+        if (Math.random() > 0.5) confetti.style.borderRadius = '50%';
+        confettiContainer.appendChild(confetti);
+      }
+    }
+
+    // Interactive explosion on submit/logo double click
+    function triggerCelebration() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      
+      // Burst 25 balloons
+      for (let i = 0; i < 25; i++) {
+        setTimeout(() => {
+          const balloon = document.createElement('div');
+          balloon.className = 'balloon';
+          balloon.style.left = `${Math.random() * 100}%`;
+          balloon.style.setProperty('--color', colors[Math.floor(Math.random() * colors.length)]);
+          balloon.style.setProperty('--duration', `${6 + Math.random() * 6}s`);
+          balloon.style.setProperty('--delay', '0s');
+          balloonContainer.appendChild(balloon);
+          setTimeout(() => balloon.remove(), 12000);
+        }, i * 120);
+      }
+      
+      // Burst 80 confetti pieces
+      for (let i = 0; i < 80; i++) {
+        setTimeout(() => {
+          const confetti = document.createElement('div');
+          confetti.className = 'confetti';
+          confetti.style.left = `${Math.random() * 100}%`;
+          confetti.style.setProperty('--color', colors[Math.floor(Math.random() * colors.length)]);
+          confetti.style.setProperty('--duration', `${3 + Math.random() * 4}s`);
+          confetti.style.setProperty('--delay', '0s');
+          if (Math.random() > 0.5) confetti.style.borderRadius = '50%';
+          confettiContainer.appendChild(confetti);
+          setTimeout(() => confetti.remove(), 7000);
+        }, i * 25);
+      }
+    }
+
+    // 3. Countdown Timer Logic (Saturday, October 17th, 2026 @ 2:00 PM)
+    const targetDate = new Date('2026-07-31T18:00:00').getTime();
+    
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const difference = targetDate - now;
+      
+      if (difference <= 0) {
+        document.getElementById('days').textContent = '00';
+        document.getElementById('hours').textContent = '00';
+        document.getElementById('minutes').textContent = '00';
+        document.getElementById('countdown').querySelector('h2').textContent = "The Party Has Started! 🎉";
+        return;
+      }
+      
+      const d = Math.floor(difference / (1000 * 60 * 60 * 24));
+      const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+      
+      document.getElementById('days').textContent = String(d).padStart(2, '0');
+      document.getElementById('hours').textContent = String(h).padStart(2, '0');
+      document.getElementById('minutes').textContent = String(m).padStart(2, '0');
+    }
+    
+    updateCountdown();
+    setInterval(updateCountdown, 15000); // Update every 15 seconds
+
+    // 4. Scroll Reveal Observer
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.fade-up').forEach(section => {
+      observer.observe(section);
+    });
+
+    // 5. Responsive Mobile Navigation Menu
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenuIcon = document.getElementById('mobileMenuIcon');
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+    
+    mobileMenuBtn.addEventListener('click', () => {
+      const isHidden = mobileMenu.classList.contains('hidden');
+      if (isHidden) {
+        mobileMenu.classList.remove('hidden');
+        mobileMenuIcon.textContent = 'close';
+      } else {
+        mobileMenu.classList.add('hidden');
+        mobileMenuIcon.textContent = 'menu';
+      }
+    });
+    
+    mobileNavLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        mobileMenuIcon.textContent = 'menu';
+      });
+    });
+
+    // 6. Navigation Link Scroll Spy Active Highlights
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('#desktopNav a');
+    
+    function scrollSpy() {
+      const scrollY = window.pageYOffset;
+      
+      sections.forEach(current => {
+        const sectionHeight = current.offsetHeight;
+        const sectionTop = current.offsetTop - 120;
+        const sectionId = current.getAttribute('id');
+        
+        if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+          navLinks.forEach(link => {
+            link.classList.remove('nav-active');
+            if (link.getAttribute('href') === `#${sectionId}`) {
+              link.classList.add('nav-active');
+            }
+          });
+        }
+      });
+    }
+    
+    window.addEventListener('scroll', scrollSpy);
+    scrollSpy();
+
+    // Scroll-based Balloon Container Visibility (Hide on Home, Show elsewhere)
+    const homeSection = document.getElementById('home');
+    function checkBalloonVisibility() {
+      const homeHeight = homeSection.offsetHeight;
+      if (window.scrollY > homeHeight - 80) {
+        balloonContainer.classList.remove('hidden');
+      } else {
+        balloonContainer.classList.add('hidden');
+      }
+    }
+    window.addEventListener('scroll', checkBalloonVisibility);
+    checkBalloonVisibility();
+
+    // 7. Interactive Photo Gallery Lightbox
+    const galleryCards = document.querySelectorAll('.gallery-card');
+    const lightboxModal = document.getElementById('lightboxModal');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxTitle = document.getElementById('lightboxTitle');
+    const lightboxClose = document.getElementById('lightboxClose');
+    
+    galleryCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const imgUrl = card.getAttribute('data-img');
+        const title = card.getAttribute('data-title');
+        const desc = card.getAttribute('data-desc');
+        
+        lightboxImg.src = imgUrl;
+        lightboxTitle.innerHTML = `<span class="font-bold text-primary block text-lg">${title}</span><span class="text-sm font-normal text-white/80 block mt-1">${desc}</span>`;
+        lightboxModal.classList.remove('hidden');
+        lightboxModal.classList.add('flex');
+      });
+    });
+    
+    // Close lightbox
+    const closeLightbox = () => {
+      lightboxModal.classList.remove('flex');
+      lightboxModal.classList.add('hidden');
+    };
+    
+    lightboxClose.addEventListener('click', closeLightbox);
+    lightboxModal.addEventListener('click', (e) => {
+      if (e.target === lightboxModal || e.target === lightboxClose || e.target.closest('#lightboxClose')) {
+        closeLightbox();
+      }
+    });
+
+    // 8. Leaflet Map Modal Display
+    const viewMapBtn = document.getElementById('viewMapBtn');
+    const mapModal = document.getElementById('mapModal');
+    const mapClose = document.getElementById('mapClose');
+    let map = null;
+    
+    viewMapBtn.addEventListener('click', () => {
+      mapModal.classList.remove('hidden');
+      mapModal.classList.add('flex');
+      
+      setTimeout(() => {
+        if (!map) {
+          // Latitude and Longitude for Vethanager Community Hall (Nagercoil)
+          const lat = 8.1833;
+          const lng = 77.4119;
+          map = L.map('mapContainer', {
+            center: [lat, lng],
+            zoom: 15,
+            zoomControl: false
+          });
+          
+          L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 20
+          }).addTo(map);
+          
+          L.control.zoom({ position: 'bottomright' }).addTo(map);
+          
+          const customMarker = L.marker([lat, lng]).addTo(map);
+          
+          customMarker.bindPopup(`
+            <div class="p-2 text-center select-none pointer-events-none">
+              <h4 class="font-bold text-primary text-sm font-headline-md">Vethanager Community Hall</h4>
+              <p class="text-xs text-on-surface-variant mt-1">Vethanager, Nagercoil</p>
+              <div class="mt-2 text-[10px] text-secondary font-semibold">Join us at 6:00 PM! 🎂</div>
+            </div>
+          `).openPopup();
+        } else {
+          map.invalidateSize();
+        }
+      }, 350);
+    });
+    
+    const closeMap = () => {
+      mapModal.classList.remove('flex');
+      mapModal.classList.add('hidden');
+    };
+    mapClose.addEventListener('click', closeMap);
+    mapModal.addEventListener('click', (e) => {
+      if (e.target === mapModal) {
+        closeMap();
+      }
+    });
+
+  });
+</script></main><footer class="w-full bg-surface-container-low py-16 px-margin-mobile lg:px-margin-desktop mt-gutter"><div class="max-w-container-max mx-auto text-center flex flex-col items-center gap-gutter"><div class="flex gap-4 mb-4"><span class="material-symbols-outlined text-tertiary">star</span><span class="material-symbols-outlined text-primary">favorite</span><span class="material-symbols-outlined text-tertiary">star</span></div><p class="font-headline-md text-headline-md text-on-surface-variant">Can't wait to celebrate with you!</p><div class="w-24 h-1 bg-primary-container rounded-full"></div><p class="font-body-md text-body-md text-on-surface-variant max-w-md">© 2026 • A very special first birthday celebration for our little one.</p><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-[0_4px_10px_rgba(118,84,105,0.3)]"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></footer></body></html>
