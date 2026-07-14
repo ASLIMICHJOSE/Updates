@@ -347,81 +347,12 @@
   }
 </style>
 <script>
-  // Web Audio API Synthesizer playing a cute lullaby Happy Birthday melody
-  class BirthdaySynth {
-    constructor() {
-      this.audioCtx = null;
-      this.isPlaying = false;
-      this.notes = [
-        // Happy Birthday in F major
-        [349.23, 0.4], [349.23, 0.4], [392.00, 0.8], [349.23, 0.8], [440.00, 0.8], [392.00, 1.2],
-        [349.23, 0.4], [349.23, 0.4], [392.00, 0.8], [349.23, 0.8], [523.25, 0.8], [440.00, 1.2],
-        [349.23, 0.4], [349.23, 0.4], [698.46, 0.8], [587.33, 0.8], [440.00, 0.8], [392.00, 0.8], [349.23, 1.2],
-        [587.33, 0.4], [587.33, 0.4], [523.25, 0.8], [440.00, 0.8], [466.16, 0.8], [440.00, 1.6]
-      ];
-      this.currentIndex = 0;
-      this.timeoutId = null;
-    }
-
-    start() {
-      if (this.isPlaying) return;
-      this.isPlaying = true;
-      if (!this.audioCtx) {
-        this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      if (this.audioCtx.state === 'suspended') {
-        this.audioCtx.resume();
-      }
-      this.currentIndex = 0;
-      this.playNext();
-    }
-
-    stop() {
-      this.isPlaying = false;
-      if (this.timeoutId) {
-        clearTimeout(this.timeoutId);
-        this.timeoutId = null;
-      }
-    }
-
-    playNext() {
-      if (!this.isPlaying) return;
-      const note = this.notes[this.currentIndex];
-      this.playTone(note[0], note[1]);
-      
-      this.currentIndex = (this.currentIndex + 1) % this.notes.length;
-      const delay = note[1] * 1000 + 100;
-      this.timeoutId = setTimeout(() => this.playNext(), delay);
-    }
-
-    playTone(freq, duration) {
-      if (!this.audioCtx) return;
-      
-      const osc = this.audioCtx.createOscillator();
-      const gainNode = this.audioCtx.createGain();
-      
-      // Soft chiptune triangle sound
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(freq, this.audioCtx.currentTime);
-      
-      gainNode.gain.setValueAtTime(0, this.audioCtx.currentTime);
-      gainNode.gain.linearRampToValueAtTime(0.15, this.audioCtx.currentTime + 0.05); // low volume
-      gainNode.gain.setValueAtTime(0.15, this.audioCtx.currentTime + duration - 0.1);
-      gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioCtx.currentTime + duration);
-      
-      osc.connect(gainNode);
-      gainNode.connect(this.audioCtx.destination);
-      
-      osc.start();
-      osc.stop(this.audioCtx.currentTime + duration);
-    }
-  }
-
   document.addEventListener('DOMContentLoaded', () => {
     // 1. Music Toggle
     const musicBtn = document.getElementById('musicToggle');
     const musicIcon = document.getElementById('musicIcon');
-    const synth = new BirthdaySynth();
+    const bgMusic = new Audio('assets/music.mpeg');
+    bgMusic.loop = true;
     let isPlaying = false;
     
     musicBtn.addEventListener('click', () => {
@@ -434,9 +365,9 @@
       musicBtn.classList.toggle('playing');
       
       if (isPlaying) {
-        synth.start();
+        bgMusic.play().catch(err => console.log("Audio playback failed:", err));
       } else {
-        synth.stop();
+        bgMusic.pause();
       }
     });
 
